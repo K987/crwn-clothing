@@ -1,6 +1,6 @@
 import { createContext, useState } from "react"; 
 
-const updateCart = (newItem, cartItems) => {
+const addToCart = (newItem, cartItems) => {
     const foundItem = cartItems.find(item => item.id === newItem.id);
     if (foundItem) {
         return cartItems.map(
@@ -14,11 +14,27 @@ const updateCart = (newItem, cartItems) => {
     }
 };
 
+const removeFromCart = (itemId, cartItems) => {
+    const foundItem = cartItems.find(item => item.id === itemId);
+    if (foundItem.quantity === 1) {
+        return cartItems.filter(item => item.id !== itemId);
+    }
+    else {
+        return cartItems.map(item => item.id === itemId ? {...item, quantity: item.quantity - 1} : item);
+    }
+};
+
+const clearItem = (itemId, cartItems) => {
+    return cartItems.filter(item => item.id !== itemId);
+};
+
 export const CartContext = createContext({
     showChart: false,
     toggleShowCart: () => {},
     cartItems: [],
     addItemToCart: () => {},
+    removeItemFromCart: () => {},
+    clearItemFromCart: () => {}
  });
 
 export const CartProvider = ({children}) => {
@@ -26,11 +42,21 @@ export const CartProvider = ({children}) => {
     const [cartItems, setCartItems] = useState([]); 
     
     const addItemToCart = (item) => {
-        const newCart = updateCart(item, cartItems)
+        const newCart = addToCart(item, cartItems)
         setCartItems(newCart);         
     }
 
-    const value = {showCart, toggleShowCart, cartItems, addItemToCart};
+    const removeItemFromCart = item => {
+        const newCart = removeFromCart(item.id, cartItems);
+        setCartItems(newCart);
+    }
+
+    const clearItemFromCart = item => {
+        const newCart = clearItem(item.id, cartItems);
+        setCartItems(newCart);
+    }
+
+    const value = {showCart, toggleShowCart, cartItems, addItemToCart, removeItemFromCart, clearItemFromCart};
 
     return (<CartContext.Provider value={value}>{children}</CartContext.Provider>);
 };
