@@ -4,22 +4,19 @@ import CategoriesPreview from "../categories-preview/categories-preview.componen
 import Category from "../category/category.component";
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from 'react';
-import { getCategotriesAndDocuments } from '../../utils/firebase/firebase.utils';
 import { useDispatch } from 'react-redux';
-import { setCategories } from '../../store/categories/categories.slice';
+import { fetchUsers } from '../../store/categories/categories.slice';
 
 const Shop = () => {
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const getGategoriesMap = async () => {
-            const map = await getCategotriesAndDocuments();
-            dispatch(setCategories(map));
-        };
-        getGategoriesMap();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
+        async function fetchUsersData() {
+            dispatch(fetchUsers());
+        }
+        fetchUsersData();
+    }, [dispatch]);
 
     return (
         <Routes>
