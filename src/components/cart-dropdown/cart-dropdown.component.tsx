@@ -4,12 +4,13 @@ import { selectCartItems } from '../../store/cart/cart.selector';
 import Button from '../button/button.component';
 import CartItem from '../cart-item/cart-item.component';
 import './cart-dropdown.styles.scss';
+import React, { ChangeEvent } from 'react';
 
 const CartDropdown = () => {
     const cartItems = useSelector(selectCartItems);
 
     const navigate = useNavigate();
-    const clickHandler = (event) => navigate('checkout');
+    const clickHandler = (event: ChangeEvent): void => navigate('checkout');
 
     return (
         <div className='cart-dropdown-container'>
