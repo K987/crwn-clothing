@@ -1,6 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const INITIAL_STATE = {
+type UserState = {
+    currentUser: unknown
+}
+
+const INITIAL_STATE: UserState = {
     currentUser: null,
 };
 
@@ -8,7 +12,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState: INITIAL_STATE,
     reducers: {
-        setCurrentUser: (state, action) => {
+        setCurrentUser: (state, action: PayloadAction<unknown>) => {
             state.currentUser = action.payload;
         } 
     }

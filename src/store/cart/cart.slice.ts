@@ -1,7 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
+type CartItem = {
+    id: number,
+    name: string,
+    quantity: number,
+    imageUrl: string,
+    price: number
+}
 
-const INITIAL_STATE = {
+type CartState = {
+    showCart: boolean,
+    cartItems: Array<CartItem>
+};
+
+const INITIAL_STATE: CartState = {
     showCart: false,
     cartItems: [],
 };
@@ -10,7 +22,7 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: INITIAL_STATE,
     reducers: {
-        addToCart: (state, action) => {
+        addToCart: (state, action: PayloadAction<CartItem>) => {
             const { cartItems } = state;
             const itemToAdd = action.payload;
 
@@ -21,7 +33,7 @@ const cartSlice = createSlice({
                 state.cartItems[itemIndex].quantity++
             }
         },
-        removeFromCart: (state, action) => {
+        removeFromCart: (state, action: PayloadAction<CartItem>) => {
             const itemToRemove = action.payload;
             const { cartItems } = state;
             
@@ -35,7 +47,7 @@ const cartSlice = createSlice({
                 state.cartItems[itemIndex].quantity--;
             }
         },
-        clearFromCart: (state, action) => {
+        clearFromCart: (state, action: PayloadAction<CartItem>) => {
             const itemToClear = action.payload;
             const { cartItems } = state;
             
@@ -47,7 +59,7 @@ const cartSlice = createSlice({
                 state.cartItems.splice(itemIndex, 1);
             }            
         },
-        toggleShowCart: (state, _) => {
+        toggleShowCart: (state, _action: PayloadAction<void>) => {
             state.showCart = !state.showCart;
         }
     }
