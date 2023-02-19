@@ -1,15 +1,16 @@
 import './cart-icon.styles.scss';
 import { ReactComponent as ShoppingIcon } from '../../assets/shopping-bag.svg';
-import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItemsCount } from '../../store/cart/cart.selector';
 import { toggleShowCart } from '../../store/cart/cart.slice';
+import { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
 
 
 const CartIcon = () => {
-    const itemsCount = useSelector(selectCartItemsCount);
-    const dispatch = useDispatch();
+    const itemsCount = useAppSelector(selectCartItemsCount);
+    const dispatch = useAppDispatch();
 
-    const handleClick = (event) => dispatch(toggleShowCart()); 
+    const handleClick = (_: ChangeEvent) => dispatch(toggleShowCart()); 
 
     return (
         <div className='cart-icon-container'>

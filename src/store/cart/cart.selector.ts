@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-export const selectShowCart = state => state.cart.showCart;
-export const selectCartItems = state => state.cart.cartItems;
+export const selectShowCart = (state: RootState) => state.cart.showCart;
+export const selectCartItems = (state: RootState) => state.cart.cartItems;
 export const selectCartItemsCount = createSelector(
     [selectCartItems],
     cartItems => cartItems.reduce((acc, item) => acc + item.quantity, 0)

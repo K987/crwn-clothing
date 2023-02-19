@@ -20,8 +20,10 @@ const persistConfig = {
     blacklist: ['user']
 }
 
+const pr = persistReducer(persistConfig, combinedReducers);
+
 export const store = configureStore({
-    reducer: persistReducer(persistConfig, combinedReducers),
+    reducer: pr,
     middleware: getDefaultMiddleware => {
         if (process.env.NODE_ENV !== 'production') {
             return getDefaultMiddleware().concat(logger)

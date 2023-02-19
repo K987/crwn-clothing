@@ -1,23 +1,23 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import Authentication from "./routes/authentication/authentication.component";
 import Checkout from "./routes/checkout/checkout.component";
 import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
 import Shop from "./routes/shop/shop.component";
+import { useAppDispatch } from "./store/hook";
 import { setCurrentUser } from "./store/user/user.slice";
 import { createUserDocumentFromAuth, onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
 
 const App = () => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
-        dispatch(setCurrentUser(user));
+        const userPayload = user && (({accessToken, email}) => ({accessToken, email}))(user);
+        dispatch(setCurrentUser(userPayload));
         if (user) {
-            //non-serializable error
             createUserDocumentFromAuth(user);
         }
     })

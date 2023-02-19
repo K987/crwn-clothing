@@ -1,9 +1,10 @@
-import { useDispatch } from 'react-redux';
-import { addToCart, clearFromCart, removeFromCart } from '../../store/cart/cart.slice';
+import { addToCart, clearFromCart, removeFromCart, CartItemElement } from '../../store/cart/cart.slice';
+import { useAppDispatch } from '../../store/hook';
 import './checkout-item.styles.scss';
 
-const CheckoutItem = ({checkoutItem}) => {
-    const dispatch = useDispatch();
+
+const CheckoutItem = ({checkoutItem}: {checkoutItem: CartItemElement}) => {
+    const dispatch = useAppDispatch();
     const {imageUrl, name, quantity, price} = checkoutItem;
 
     const handleDecrease = () => {

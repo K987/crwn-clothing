@@ -4,16 +4,16 @@ import CategoriesPreview from "../categories-preview/categories-preview.componen
 import Category from "../category/category.component";
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchUsers } from '../../store/categories/categories.slice';
+import { fetchCategories } from '../../store/categories/categories.slice';
+import { useAppDispatch } from '../../store/hook';
 
 const Shop = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         async function fetchUsersData() {
-            dispatch(fetchUsers());
+            dispatch(fetchCategories());
         }
         fetchUsersData();
     }, [dispatch]);

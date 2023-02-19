@@ -1,7 +1,8 @@
+import { Category } from '../../routes/home/home.component';
 import CategoryItem from '../category-item/category-item.component';
 import './directory.styles.scss';
 
-const Directory = ({categories}) => {
+const Directory = ({categories} : {categories: Category[]}) => {
 
     return (
         <div className='categories-container'>

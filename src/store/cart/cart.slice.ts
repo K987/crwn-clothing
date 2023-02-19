@@ -1,16 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { CategoryItem } from "../categories/categories.slice"
 
-type CartItem = {
-    id: number,
-    name: string,
+export type CartItemElement = {
     quantity: number,
-    imageUrl: string,
-    price: number
-}
+} & CategoryItem
 
 type CartState = {
-    showCart: boolean,
-    cartItems: Array<CartItem>
+    readonly showCart: boolean,
+    readonly cartItems: Array<CartItemElement>
 };
 
 const INITIAL_STATE: CartState = {
@@ -22,7 +19,7 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: INITIAL_STATE,
     reducers: {
-        addToCart: (state, action: PayloadAction<CartItem>) => {
+        addToCart: (state, action: PayloadAction<CategoryItem>) => {
             const { cartItems } = state;
             const itemToAdd = action.payload;
 
@@ -33,7 +30,7 @@ const cartSlice = createSlice({
                 state.cartItems[itemIndex].quantity++
             }
         },
-        removeFromCart: (state, action: PayloadAction<CartItem>) => {
+        removeFromCart: (state, action: PayloadAction<CartItemElement>) => {
             const itemToRemove = action.payload;
             const { cartItems } = state;
             
@@ -47,7 +44,7 @@ const cartSlice = createSlice({
                 state.cartItems[itemIndex].quantity--;
             }
         },
-        clearFromCart: (state, action: PayloadAction<CartItem>) => {
+        clearFromCart: (state, action: PayloadAction<CartItemElement>) => {
             const itemToClear = action.payload;
             const { cartItems } = state;
             

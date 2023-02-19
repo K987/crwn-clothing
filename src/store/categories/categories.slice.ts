@@ -1,4 +1,3 @@
-import { DocumentData } from "@firebase/firestore";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getCategotriesAndDocuments } from "../../utils/firebase/firebase.utils";
 
@@ -7,14 +6,28 @@ enum Status {
     Pending
 };
 
-type Category = {
-
+export type CategoryItem = {
+    id: number,
+    imageUrl: string,
+    name: string,
+    price: number,
 };
 
-type CategoryState = {
-    categories: Array<Category>,
-    status: Status,
-    error: unknown
+export type Category = {
+    title: string,
+    imageUrl: string,
+    items: CategoryItem[],
+};
+
+
+export type CategoryMap = {
+    [key: string]: CategoryItem[],
+};
+
+export type CategoryState = {
+    readonly categories: Array<Category>,
+    readonly status: Status,
+    readonly error: unknown
 };
 
 const INITIAL_STATE: CategoryState = {
@@ -23,7 +36,7 @@ const INITIAL_STATE: CategoryState = {
     error: ''
 };
 
-export const fetchUsers = createAsyncThunk(
+export const fetchCategories = createAsyncThunk(
     'categories/fetchCategories',
     async (_: void) => {
         const map = await getCategotriesAndDocuments();
@@ -37,20 +50,20 @@ const categoriesSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder.addCase(
-            fetchUsers.fulfilled, 
+            fetchCategories.fulfilled, 
             (state, action) => {
                 state.categories = action.payload;
                 state.status = Status.Idle;
             }
         );
         builder.addCase(
-            fetchUsers.pending,
+            fetchCategories.pending,
             (state, _: PayloadAction<void>) => {
                 state.status = Status.Pending;
             }
         );
         builder.addCase(
-            fetchUsers.rejected,
+            fetchCategories.rejected,
             (state, action) => {
                 state.status = Status.Idle;
                 state.error = action.payload;

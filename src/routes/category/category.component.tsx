@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../components/product-card/product-card.component';
 import { selectCategories } from '../../store/categories/categories.selector';
+import { useAppSelector } from '../../store/hook';
 import './category.styles.scss';
 
+type CategoryRouteParams = {
+    category: string;
+  };
+
 const Category = () => {
-    const {category} = useParams();
-    const categories = useSelector(selectCategories);
+    const {category} = useParams<keyof CategoryRouteParams>() as CategoryRouteParams;
+    const categories = useAppSelector(selectCategories);
     const [products, setProducts] = useState(categories[category]);
     useEffect(() => {setProducts(categories[category])}, [categories, category]);
     return (
