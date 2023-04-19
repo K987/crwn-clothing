@@ -1,23 +1,42 @@
-import './button.styles.scss'
-import React, { ReactNode } from 'react'
+import './button.styles.jsx'
+import React, { ButtonHTMLAttributes, ReactNode } from 'react'
+import { BaseButton, GoogleSignInButton, InvertedButton } from './button.styles.jsx';
 
 export enum BUTTON_TYPE_CLASSES {
+    base = 'base',
     google = 'google-sign-in',
     inverted = 'inverted',
 }
 
+const getButton = (buttonType = BUTTON_TYPE_CLASSES.base): typeof BaseButton => {
+    /*
+        dynamic approch:
+        ({
+            [BUTTON_TYPE_CLASSES.base]: BaseButton,
+            ....
+        }[buttonType]);
+    */
+    switch(buttonType) {
+        case BUTTON_TYPE_CLASSES.base:
+            return BaseButton;
+        case BUTTON_TYPE_CLASSES.google:
+            return GoogleSignInButton;
+        case BUTTON_TYPE_CLASSES.inverted:
+            return InvertedButton;
+    }
+};
+
 type ButtonProps = {
     children: ReactNode,
     buttonType?: BUTTON_TYPE_CLASSES,
-    buttonOptions?: object
-}
+} & ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button = ({children, buttonType, buttonOptions}: ButtonProps) => {
-
+const Button = ({children, buttonType, ...otherProps}: ButtonProps) => {
+    const CustomButton = getButton(buttonType);
     return (
-        <button className={`button-container ${ buttonType }`} {...buttonOptions}>
+        <CustomButton {...otherProps}>
             {children}
-        </button>
+        </CustomButton>
     );
 };
 
