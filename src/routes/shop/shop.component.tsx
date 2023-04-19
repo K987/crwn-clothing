@@ -4,7 +4,8 @@ import CategoriesPreview from "../categories-preview/categories-preview.componen
 import Category from "../category/category.component";
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from 'react';
-import { fetchCategories } from '../../store/categories/categories.slice';
+
+ import { fetchCategories } from '../../store/categories/categories.slice';
 import { useAppDispatch } from '../../store/hook';
 
 const Shop = () => {

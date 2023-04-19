@@ -7,9 +7,12 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    User,
+    NextOrObserver
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, getDocs, query } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, getDocs, query, DocumentReference, DocumentData } from "firebase/firestore";
+import { Category } from "../../store/categories/categories.slice";
 
 
 // Your web app's Firebase configuration
@@ -25,19 +28,20 @@ const firebaseConfig = {
 // Initialize Firebase
 // eslint-disable-next-line
 const app = initializeApp(firebaseConfig);
-const provider = new GoogleAuthProvider({
-    prompt: "select_account",
-
-});
+const provider = new GoogleAuthProvider();
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
 
-export const addCollectionAndDocuments = async (
-    collectionKey,
-    objectsToAdd
-  ) => {
+export type ObjectToAdd = {
+    title: string;
+};
+
+export const addCollectionAndDocuments = async<T extends ObjectToAdd> (
+    collectionKey: string,
+    objectsToAdd: T[]
+  ): Promise<void> => {
     const batch = writeBatch(db);
     const collectionRef = collection(db, collectionKey);
     
@@ -50,16 +54,22 @@ export const addCollectionAndDocuments = async (
     //console.log('done');
   };
 
-export const getCategotriesAndDocuments = async () => {
+export const getCategotriesAndDocuments = async () : Promise<Category[]> => {
     const collectionRef = collection(db, 'categories');
     const q = query(collectionRef);
 
     const snapShot = await getDocs(q);
     
-    return snapShot.docs.map(docSnapshot => docSnapshot.data());
+    return snapShot.docs.map(docSnapshot => docSnapshot.data() as Category);
 };
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export type UserData = {
+    createdAt: Date,
+    displayName: string,
+    email: string 
+};
+
+export const createUserDocumentFromAuth = async (userAuth: User): Promise<DocumentReference<DocumentData> | void> => {
     if (!userAuth) {
         return;
     }
@@ -81,14 +91,14 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
 };
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
     if (!email || !password) {
         return;
     }
     return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const loginWithEmailAndPassword = async (email, password) => {
+export const loginWithEmailAndPassword = async (email: string, password: string) => {
     if (!email || !password) {
         return;
     }
@@ -97,4 +107,4 @@ export const loginWithEmailAndPassword = async (email, password) => {
 
 export const signOutUser = async () => await signOut(auth);
 
-export const onAuthStateChangedListener = callback => onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => onAuthStateChanged(auth, callback);
