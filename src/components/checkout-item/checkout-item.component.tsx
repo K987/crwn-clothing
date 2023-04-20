@@ -1,6 +1,6 @@
 import { addToCart, clearFromCart, removeFromCart, CartItemElement } from '../../store/cart/cart.slice';
 import { useAppDispatch } from '../../store/hook';
-import './checkout-item.styles.scss';
+import { Arrow, BaseSpan, CheckoutItemContainer, ImageContainer, Quantity, RemoveButton, Value } from './checkout-item.styles';
 
 
 const CheckoutItem = ({checkoutItem}: {checkoutItem: CartItemElement}) => {
@@ -18,19 +18,19 @@ const CheckoutItem = ({checkoutItem}: {checkoutItem: CartItemElement}) => {
     };
     
     return (
-        <div className='checkout-item-container'>
-            <div className='image-container'>
+        <CheckoutItemContainer>
+            <ImageContainer>
                 <img src={imageUrl} alt={name} />
-            </div>
-            <span className='name'>{name}</span>
-            <div className='quantity'>
-                <span className='arrow' onClick={handleDecrease}>{'<'}</span>
-                <span className='value'>{quantity}</span>
-                <span className='arrow' onClick={handleIncrease}>{'>'}</span>
-            </div>
-            <span className='price'>{quantity * price}</span>
-            <span className='remove-button' onClick={handleRemove}>X</span>
-        </div>
+            </ImageContainer>
+            <BaseSpan>{name}</BaseSpan>
+            <Quantity>
+                <Arrow onClick={handleDecrease}>{'<'}</Arrow>
+                <Value>{quantity}</Value>
+                <Arrow onClick={handleIncrease}>{'>'}</Arrow>
+            </Quantity>
+            <BaseSpan>{quantity * price}</BaseSpan>
+            <RemoveButton onClick={handleRemove}>X</RemoveButton>
+        </CheckoutItemContainer>
     );
 }; 
 

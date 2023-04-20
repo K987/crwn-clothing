@@ -1,5 +1,5 @@
 import { FC, InputHTMLAttributes } from 'react';
-import './form-input.styles.scss';
+import { Group, Input, FormInputLabel } from './form-input.styles';
 
 type FormInputProps = {
     label: string,
@@ -7,17 +7,19 @@ type FormInputProps = {
 
 const FormInput : FC<FormInputProps> = ({label, ...otherProps}) => {
     return (
-        <div className="group">
-            <input className="form-input" {...otherProps}/>
+        <Group>
+            <Input {...otherProps}/>
             {label && 
-                <label className={`${
-                    Boolean(otherProps.value 
-                    && typeof otherProps.value === 'string' 
-                    && otherProps.value.length) ? 'shrink' :  null} form-input-label`} >
+                <FormInputLabel shrink={
+                        Boolean(
+                            otherProps.value 
+                            && typeof otherProps.value === 'string' 
+                            && otherProps.value.length
+                        )} >
                     {label}
-                </label>
+                </FormInputLabel>
             }
-        </div>
+        </Group>
     );
 }
 

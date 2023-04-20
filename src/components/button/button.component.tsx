@@ -1,6 +1,5 @@
-import './button.styles.jsx'
 import React, { ButtonHTMLAttributes, ReactNode } from 'react'
-import { BaseButton, GoogleSignInButton, InvertedButton } from './button.styles.jsx';
+import { BaseButton, GoogleSignInButton, InvertedButton } from './button.styles';
 
 export enum BUTTON_TYPE_CLASSES {
     base = 'base',
