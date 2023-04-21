@@ -1,7 +1,9 @@
+import { memo } from 'react';
 import { CartItemElement } from '../../store/cart/cart.slice';
 import { CartItemContainer, ItemDeatils } from './cart-item.styles';
 
-const CartItem = ({cartItem}: {cartItem: CartItemElement}) => {
+// memo: don't rerendeer unless props changed
+const CartItem = memo(({cartItem}: {cartItem: CartItemElement}) => {
 
     const { name, quantity, imageUrl, price } = cartItem;
 
@@ -14,6 +16,6 @@ const CartItem = ({cartItem}: {cartItem: CartItemElement}) => {
             </ItemDeatils>
         </CartItemContainer>
     );
-};
+});
 
 export default CartItem;
